@@ -50,7 +50,7 @@ const MovieDetails = () => {
         Oops! Something went wrong: {error.message}
       </p>
     );
-  if (!movie) return null; // Якщо фільм ще не завантажено
+  if (!movie) return null;
 
   return (
     <div className="container">

@@ -11,11 +11,11 @@ const Movies = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [inputValue, setInputValue] = useState(query); // Стан для керованого інпуту
+  const [inputValue, setInputValue] = useState(query);
 
   useEffect(() => {
     if (!query) {
-      setMovies([]); // Очистити фільми, якщо запит порожній
+      setMovies([]);
       return;
     }
 
@@ -25,7 +25,7 @@ const Movies = () => {
       try {
         const data = await searchMovies(query);
         if (data.results.length === 0) {
-          alert(`No movies found for "${query}".`); // Просте сповіщення
+          alert(`No movies found for "${query}".`);
         }
         setMovies(data.results);
       } catch (err) {
@@ -36,8 +36,7 @@ const Movies = () => {
     };
 
     fetchMovies();
-  }, [query]); // Запускається, коли query в URL змінюється
-
+  }, [query]);
   const handleSearch = e => {
     e.preventDefault();
     const newQuery = inputValue.trim();
@@ -45,7 +44,7 @@ const Movies = () => {
       alert('Please enter a search query.');
       return;
     }
-    setSearchParams({ query: newQuery }); // Оновлює URL
+    setSearchParams({ query: newQuery });
   };
 
   return (

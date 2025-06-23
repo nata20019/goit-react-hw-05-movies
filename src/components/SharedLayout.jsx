@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navigation from './Navigation';
 import Loader from './Loader';
-// import './SharedLayout.css'; // Для базового лейауту
+import './SharedLayout.css'; 
 
 const SharedLayout = () => {
   return (

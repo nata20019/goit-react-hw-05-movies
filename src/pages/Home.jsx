@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchTrendingMovies } from '../api/themoviedb-api';
-import Loader from '../components/Loader'; // Можна створити простий Loader
-import './pages.css'; // Для базових стилів
+import Loader from '../components/Loader';
+import './pages.css';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
