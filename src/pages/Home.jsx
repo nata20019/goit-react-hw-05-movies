@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
 import { fetchTrendingMovies } from '../api/themoviedb-api';
 import Loader from '../components/Loader';
-import './pages.css';
-// import MovieDetails from './MovieDetails';
 import MoviesList from '../components/MoviesList';
+import './pages.css';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -37,7 +35,12 @@ const Home = () => {
           Oops! Something went wrong: {error.message}
         </p>
       )}
-      <MoviesList />
+      {!isLoading && !error && movies.length > 0 && (
+        <MoviesList movies={movies} />
+      )}
+      {!isLoading && !error && movies.length === 0 && (
+        <p>No trending movies available.</p>
+      )}
       {/* {movies.length > 0 && (
         <ul>
           {movies.map(movie => (

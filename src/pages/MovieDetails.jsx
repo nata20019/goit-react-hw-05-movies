@@ -17,7 +17,6 @@ const MovieDetails = () => {
   const [error, setError] = useState(null);
   const location = useLocation(); // Для збереження стану попередньої сторінки
   // const navigate = useNavigate(); // Для навігації назад
-  const navigate = location.state?.from ?? '/movies';
 
   useEffect(() => {
     if (!movieId) return;
@@ -38,77 +37,78 @@ const MovieDetails = () => {
     fetchDetails();
   }, [movieId]);
 
-  const handleGoBack = () => {
-    // navigate(location.state?.from || '/');
-
-    if (isLoading) return <Loader />;
-    if (error)
-      return (
-        <p className="error-message">
-          Oops! Something went wrong: {error.message}
-        </p>
-      );
-    if (!movie) return null;
-
+  // const handleGoBack = () => {
+  //   navigate(backLinkHref);
+  // };
+  if (isLoading) return <Loader />;
+  if (error)
     return (
-      <div className="container">
-        {/* <button type="button" onClick={handleGoBack} className="go-back-btn">
+      <p className="error-message">
+        Oops! Something went wrong: {error.message}
+      </p>
+    );
+  if (!movie) return null;
+
+  return (
+    <div className="container">
+      {/* <button type="button" onClick={handleGoBack} className="go-back-btn">
         Go back
       </button> */}
-        <Link to={navigate}>Go back</Link>
+      <Link to={location.state?.from ?? '/movies'}>Go back</Link>
 
-        <div className="movie-details-card">
-          <img
-            src={
-              movie.poster_path
-                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                : 'https://via.placeholder.com/200x300.png?text=No+Image'
-            }
-            alt={movie.title || movie.name}
-            width="300"
-          />
-          <div className="movie-info">
-            <h2>
-              {movie.title || movie.name} (
-              {new Date(movie.release_date).getFullYear()})
-            </h2>
-            <p>
-              User Score:{' '}
-              {movie.vote_average ? Math.round(movie.vote_average * 10) : 'N/A'}
-              %
-            </p>
-            <h3>Overview</h3>
-            <p>{movie.overview}</p>
-            <h3>Genres</h3>
-            <p>{movie.genres.map(genre => genre.name).join(', ')}</p>
-          </div>
+      <div className="movie-details-card">
+        <img
+          src={
+            movie.poster_path
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+              : 'https://via.placeholder.com/200x300.png?text=No+Image'
+          }
+          alt={movie.title || movie.name}
+          width="300"
+        />
+        <div className="movie-info">
+          <h2>
+            {movie.title || movie.name} (
+            {new Date(movie.release_date).getFullYear()})
+          </h2>
+          <p>
+            User Score:{' '}
+            {movie.vote_average ? Math.round(movie.vote_average * 10) : 'N/A'}%
+          </p>
+          <h3>Overview</h3>
+          <p>{movie.overview}</p>
+          <h3>Genres</h3>
+          <p>{movie.genres.map(genre => genre.name).join(', ')}</p>
         </div>
-
-        <hr />
-
-        <h3>Additional information</h3>
-        <ul className="additional-info-list">
-          <li>
-            <Link to="cast" state={{ from: location.state?.from || '/' }}>
-              Cast
-            </Link>{' '}
-          </li>
-          <li>
-            <Link to="reviews" state={{ from: location.state?.from || '/' }}>
-              Reviews
-            </Link>{' '}
-          </li>
-        </ul>
-
-        <hr />
-
-        {/* Outlet для рендерингу вкладених маршрутів (Cast або Reviews) */}
-        <Suspense fallback={<Loader />}>
-          <Outlet />
-        </Suspense>
       </div>
-    );
-  };
+
+      <hr />
+
+      <h3>Additional information</h3>
+      <ul className="additional-info-list">
+        <li>
+          <Link to="cast" state={{ from: location.state?.from ?? '/movies' }}>
+            Cast
+          </Link>{' '}
+        </li>
+        <li>
+          <Link
+            to="reviews"
+            state={{ from: location.state?.from ?? '/movies' }}
+          >
+            Reviews
+          </Link>{' '}
+        </li>
+      </ul>
+
+      <hr />
+
+      {/* Outlet для рендерингу вкладених маршрутів (Cast або Reviews) */}
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
+    </div>
+  );
 };
 
 export default MovieDetails;

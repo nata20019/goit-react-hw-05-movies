@@ -67,7 +67,12 @@ const Movies = () => {
           Oops! Something went wrong: {error.message}
         </p>
       )}
-      <MoviesList />
+      {!isLoading && !error && movies.length > 0 && (
+        <MoviesList movies={movies} />
+      )}
+      {!isLoading && !error && movies.length === 0 && query && (
+        <p>No movies found for "{query}".</p>
+      )}
       {/* {movies.length > 0 && (
         <ul>
           {movies.map(movie => (
