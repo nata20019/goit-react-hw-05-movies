@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { searchMovies } from '../api/themoviedb-api';
 import Loader from '../components/Loader';
+import MoviesList from '../components/MoviesList';
 import './pages.css';
 
 const Movies = () => {
@@ -66,7 +67,8 @@ const Movies = () => {
           Oops! Something went wrong: {error.message}
         </p>
       )}
-      {movies.length > 0 && (
+      <MoviesList />
+      {/* {movies.length > 0 && (
         <ul>
           {movies.map(movie => (
             <li key={movie.id}>
@@ -76,7 +78,7 @@ const Movies = () => {
             </li>
           ))}
         </ul>
-      )}
+      )} */}
     </div>
   );
 };

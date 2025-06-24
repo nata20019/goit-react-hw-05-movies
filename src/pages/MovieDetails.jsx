@@ -4,7 +4,7 @@ import {
   Link,
   Outlet,
   useLocation,
-  useNavigate,
+  // useNavigate,
 } from 'react-router-dom';
 import { getMovieDetails } from '../api/themoviedb-api';
 import Loader from '../components/Loader';
@@ -16,7 +16,8 @@ const MovieDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const location = useLocation(); // Для збереження стану попередньої сторінки
-  const navigate = useNavigate(); // Для навігації назад
+  // const navigate = useNavigate(); // Для навігації назад
+  const navigate = location.state?.from ?? '/movies';
 
   useEffect(() => {
     if (!movieId) return;
@@ -38,78 +39,76 @@ const MovieDetails = () => {
   }, [movieId]);
 
   const handleGoBack = () => {
-    // Повертаємося на попередню сторінку, використовуючи savedFrom з location.state
-    // Якщо його немає, переходимо на '/' або '/movies' як fallback
-    navigate(location.state?.from || '/'); // або '/movies' залежить від логіки
-  };
+    // navigate(location.state?.from || '/');
 
-  if (isLoading) return <Loader />;
-  if (error)
+    if (isLoading) return <Loader />;
+    if (error)
+      return (
+        <p className="error-message">
+          Oops! Something went wrong: {error.message}
+        </p>
+      );
+    if (!movie) return null;
+
     return (
-      <p className="error-message">
-        Oops! Something went wrong: {error.message}
-      </p>
-    );
-  if (!movie) return null;
-
-  return (
-    <div className="container">
-      <button type="button" onClick={handleGoBack} className="go-back-btn">
+      <div className="container">
+        {/* <button type="button" onClick={handleGoBack} className="go-back-btn">
         Go back
-      </button>
+      </button> */}
+        <Link to={navigate}>Go back</Link>
 
-      <div className="movie-details-card">
-        <img
-          src={
-            movie.poster_path
-              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-              : 'https://via.placeholder.com/200x300.png?text=No+Image'
-          }
-          alt={movie.title || movie.name}
-          width="300"
-        />
-        <div className="movie-info">
-          <h2>
-            {movie.title || movie.name} (
-            {new Date(movie.release_date).getFullYear()})
-          </h2>
-          <p>
-            User Score:{' '}
-            {movie.vote_average ? Math.round(movie.vote_average * 10) : 'N/A'}%
-          </p>
-          <h3>Overview</h3>
-          <p>{movie.overview}</p>
-          <h3>Genres</h3>
-          <p>{movie.genres.map(genre => genre.name).join(', ')}</p>
+        <div className="movie-details-card">
+          <img
+            src={
+              movie.poster_path
+                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                : 'https://via.placeholder.com/200x300.png?text=No+Image'
+            }
+            alt={movie.title || movie.name}
+            width="300"
+          />
+          <div className="movie-info">
+            <h2>
+              {movie.title || movie.name} (
+              {new Date(movie.release_date).getFullYear()})
+            </h2>
+            <p>
+              User Score:{' '}
+              {movie.vote_average ? Math.round(movie.vote_average * 10) : 'N/A'}
+              %
+            </p>
+            <h3>Overview</h3>
+            <p>{movie.overview}</p>
+            <h3>Genres</h3>
+            <p>{movie.genres.map(genre => genre.name).join(', ')}</p>
+          </div>
         </div>
+
+        <hr />
+
+        <h3>Additional information</h3>
+        <ul className="additional-info-list">
+          <li>
+            <Link to="cast" state={{ from: location.state?.from || '/' }}>
+              Cast
+            </Link>{' '}
+          </li>
+          <li>
+            <Link to="reviews" state={{ from: location.state?.from || '/' }}>
+              Reviews
+            </Link>{' '}
+          </li>
+        </ul>
+
+        <hr />
+
+        {/* Outlet для рендерингу вкладених маршрутів (Cast або Reviews) */}
+        <Suspense fallback={<Loader />}>
+          <Outlet />
+        </Suspense>
       </div>
-
-      <hr />
-
-      <h3>Additional information</h3>
-      <ul className="additional-info-list">
-        <li>
-          <Link to="cast" state={{ from: location.state?.from || '/' }}>
-            Cast
-          </Link>{' '}
-          {/* Передаємо state назад */}
-        </li>
-        <li>
-          <Link to="reviews" state={{ from: location.state?.from || '/' }}>
-            Reviews
-          </Link>{' '}
-          {/* Передаємо state назад */}
-        </li>
-      </ul>
-
-      <hr />
-
-      {/* Outlet для рендерингу вкладених маршрутів (Cast або Reviews) */}
-      <Suspense fallback={<Loader />}>
-        <Outlet />
-      </Suspense>
-    </div>
-  );
+    );
+  };
 };
 
 export default MovieDetails;

@@ -16,6 +16,7 @@ axios.defaults.params = {
 export const fetchTrendingMovies = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/trending/movie/day`);
+    console.log(response.data.results);
     return response.data.results;
   } catch (error) {
     console.error('Error fetching trending movies:', error);
@@ -31,6 +32,7 @@ export const searchMovies = async (query, page = 1) => {
         page,
       },
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(`Error searching movies for "${query}":`, error);
@@ -41,6 +43,7 @@ export const searchMovies = async (query, page = 1) => {
 export const getMovieDetails = async movieId => {
   try {
     const response = await axios.get(`${BASE_URL}/movie/${movieId}`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(`Error fetching movie details for ID ${movieId}:`, error);
@@ -51,6 +54,7 @@ export const getMovieDetails = async movieId => {
 export const getMovieCredits = async movieId => {
   try {
     const response = await axios.get(`${BASE_URL}/movie/${movieId}/credits`);
+    console.log(response.data.cast);
     return response.data.cast;
   } catch (error) {
     console.error(`Error fetching movie credits for ID ${movieId}:`, error);
@@ -65,6 +69,7 @@ export const getMovieReviews = async (movieId, page = 1) => {
         page,
       },
     });
+    console.log(response.data.results);
     return response.data.results;
   } catch (error) {
     console.error(`Error fetching movie reviews for ID ${movieId}:`, error);

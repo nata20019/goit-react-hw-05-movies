@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { fetchTrendingMovies } from '../api/themoviedb-api';
 import Loader from '../components/Loader';
 import './pages.css';
+// import MovieDetails from './MovieDetails';
+import MoviesList from '../components/MoviesList';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -35,7 +37,8 @@ const Home = () => {
           Oops! Something went wrong: {error.message}
         </p>
       )}
-      {movies.length > 0 && (
+      <MoviesList />
+      {/* {movies.length > 0 && (
         <ul>
           {movies.map(movie => (
             <li key={movie.id}>
@@ -45,7 +48,7 @@ const Home = () => {
             </li>
           ))}
         </ul>
-      )}
+      )} */}
     </div>
   );
 };
