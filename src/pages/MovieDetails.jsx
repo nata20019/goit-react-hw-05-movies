@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useRef } from 'react';
 import {
   useParams,
   Link,
@@ -17,6 +17,8 @@ const MovieDetails = () => {
   const [error, setError] = useState(null);
   const location = useLocation(); // Для збереження стану попередньої сторінки
   // const navigate = useNavigate(); // Для навігації назад
+  // const backLinkHref = location.state?.from ?? '/movies';
+  const goBack = useRef(location.state);
 
   useEffect(() => {
     if (!movieId) return;
@@ -54,8 +56,8 @@ const MovieDetails = () => {
       {/* <button type="button" onClick={handleGoBack} className="go-back-btn">
         Go back
       </button> */}
-      <Link to={location.state?.from ?? '/movies'}>Go back</Link>
-
+      {/* <Link to={backLinkHref}>Go back</Link> */}
+      <Link to={goBack.current}>Go back</Link>
       <div className="movie-details-card">
         <img
           src={
@@ -87,17 +89,12 @@ const MovieDetails = () => {
       <h3>Additional information</h3>
       <ul className="additional-info-list">
         <li>
-          <Link to="cast" state={{ from: location.state?.from ?? '/movies' }}>
-            Cast
-          </Link>{' '}
+          {/* <Link to="cast" state={{ from: backLinkHref }}> */}
+          <Link to="cast">Cast</Link>{' '}
         </li>
         <li>
-          <Link
-            to="reviews"
-            state={{ from: location.state?.from ?? '/movies' }}
-          >
-            Reviews
-          </Link>{' '}
+          {/* <Link to="reviews" state={{ from: backLinkHref }}> */}
+          <Link to="reviews">Reviews</Link>{' '}
         </li>
       </ul>
 
